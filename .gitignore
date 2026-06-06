@@ -1,9 +1,12 @@
 # Secrets & keys — NEVER commit these
 .env
+keys.md
 keys/*
 !keys/.gitkeep
 *.pem
 *.key
+tb-hackathon-ssh/
+tb-hackathon-ssh.zip
 
 # Python
 __pycache__/
