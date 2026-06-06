@@ -4,6 +4,7 @@ This is intentionally minimal. Build your own API here for the frontend to call,
 and consume the Phoenix ERP mock from your backend (see docs/phoenix-openapi.yaml).
 Keep the ERP token and the SSH key on the backend — never in the browser.
 """
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 

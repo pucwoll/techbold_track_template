@@ -26,7 +26,7 @@ frontend/       React + Vite + TypeScript skeleton — build the technician UI h
 docs/
   phoenix-openapi.yaml   the ERP API contract (OpenAPI) — your backend consumes this
   scoring.md             the full 100-point rubric (read it!)
-docker-compose.yml       runs backend (:8000) + frontend (:5173)
+docker-compose.yml       runs frontend, backend-api, worker, and postgres
 .env.example             copy to .env and fill in
 keys/                    put your SSH .pem here (git-ignored)
 ```
@@ -46,7 +46,8 @@ Your event organisers give you, on **Builder Base**:
 > a local model, …), you **bring your own** API key/endpoint and add it to `.env`. Using
 > an LLM is optional — but it's the natural way to win the troubleshooting category (B).
 
-You also need **Docker** (Docker Desktop) and, for local dev, **Python 3.11+** and **Node 20+**.
+You also need **Docker** (Docker Desktop) and, for local dev, **Python 3.14+**, **uv**, **Node 24.15+**, and **pnpm 11.5.2**.
+This repo includes `mise.toml`, so `mise install` is the easiest way to get matching local tools.
 
 ---
 
@@ -76,17 +77,20 @@ docker compose up --build
 
 - Frontend (your workspace) → http://localhost:5173
 - Backend (your API) → http://localhost:8000/health and Swagger at `/docs`
+- Postgres → internal Compose service `postgres:5432` using the dev credentials from `.env.example`
 
 ### Run without Docker
 
 ```bash
 # backend
 cd backend
-python -m venv .venv && .venv/bin/pip install -r requirements.txt   # Windows: .venv\Scripts\pip
-.venv/bin/uvicorn app.main:app --reload
+mise exec -- uv sync --locked
+mise exec -- uv run uvicorn app.main:app --reload
 
 # frontend (new terminal)
-cd frontend && npm install && npm run dev
+cd frontend
+mise exec -- pnpm install
+mise exec -- pnpm run dev
 ```
 
 ---

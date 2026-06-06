@@ -1,0 +1,17 @@
+[tools]
+node = "lts"
+python = "3.14"
+uv = "latest"
+ruff = "latest"
+ty = "latest"
+
+[settings]
+experimental = true
+
+[hooks]
+postinstall = "corepack enable"
+
+[env]
+_.path = ["{{config_root}}/node_modules/.bin"]
+PROJECT_NAME = "{{ config_root | basename }}"
+_.python.venv = { path = "backend/.venv", create = true }
