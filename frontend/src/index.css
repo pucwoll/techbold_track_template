@@ -1,3 +1,591 @@
-/* Minimal reset — style the app however you like. */
-* { box-sizing: border-box; }
-body { margin: 0; background: #fff; color: #1d1d1f; }
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  font-family: Aptos, "Segoe UI", "Helvetica Neue", sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  --background: oklch(0.975 0.009 151.2);
+  --foreground: oklch(0.21 0.022 157.2);
+  --card: oklch(0.995 0.004 151.2);
+  --card-foreground: oklch(0.21 0.022 157.2);
+  --popover: oklch(0.995 0.004 151.2);
+  --popover-foreground: oklch(0.21 0.022 157.2);
+  --primary: oklch(0.45 0.101 177.5);
+  --primary-foreground: oklch(0.99 0.004 151.2);
+  --secondary: oklch(0.92 0.018 158.8);
+  --secondary-foreground: oklch(0.25 0.03 158.8);
+  --muted: oklch(0.92 0.014 158.8);
+  --muted-foreground: oklch(0.5 0.025 158.8);
+  --accent: oklch(0.91 0.042 171.4);
+  --accent-foreground: oklch(0.24 0.052 174.6);
+  --destructive: oklch(0.57 0.215 27.3);
+  --destructive-foreground: oklch(0.99 0.004 151.2);
+  --border: oklch(0.88 0.014 158.8);
+  --input: oklch(0.88 0.014 158.8);
+  --ring: oklch(0.58 0.111 174.6);
+  --radius: 0.5rem;
+  --console: oklch(0.18 0.028 157.2);
+  --console-foreground: oklch(0.975 0.021 153.2);
+  --console-muted: oklch(0.75 0.035 165.2);
+}
+
+.dark {
+  --background: oklch(0.18 0.028 157.2);
+  --foreground: oklch(0.975 0.021 153.2);
+  --card: oklch(0.22 0.03 157.2);
+  --card-foreground: oklch(0.975 0.021 153.2);
+  --popover: oklch(0.22 0.03 157.2);
+  --popover-foreground: oklch(0.975 0.021 153.2);
+  --primary: oklch(0.7 0.119 164.3);
+  --primary-foreground: oklch(0.16 0.028 157.2);
+  --secondary: oklch(0.27 0.029 157.2);
+  --secondary-foreground: oklch(0.975 0.021 153.2);
+  --muted: oklch(0.27 0.029 157.2);
+  --muted-foreground: oklch(0.75 0.035 165.2);
+  --accent: oklch(0.31 0.047 171.4);
+  --accent-foreground: oklch(0.975 0.021 153.2);
+  --destructive: oklch(0.68 0.19 24.8);
+  --destructive-foreground: oklch(0.99 0.004 151.2);
+  --border: oklch(1 0 0 / 16%);
+  --input: oklch(1 0 0 / 18%);
+  --ring: oklch(0.72 0.118 164.3);
+}
+
+@theme inline {
+  --font-sans: Aptos, "Segoe UI", "Helvetica Neue", sans-serif;
+  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-console: var(--console);
+  --color-console-foreground: var(--console-foreground);
+  --color-console-muted: var(--console-muted);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+}
+
+@layer base {
+  * {
+    @apply box-border border-border;
+  }
+
+  html,
+  body,
+  #root {
+    @apply min-h-full;
+  }
+
+  body {
+    @apply m-0 bg-background text-foreground antialiased;
+    background-image:
+      linear-gradient(90deg, color-mix(in oklch, var(--primary) 10%, transparent) 1px, transparent 1px),
+      linear-gradient(0deg, color-mix(in oklch, var(--primary) 8%, transparent) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+
+  button,
+  select,
+  input,
+  textarea {
+    font: inherit;
+  }
+}
+
+@layer components {
+  .app-shell {
+    @apply flex min-h-screen flex-col;
+  }
+
+  .topbar {
+    @apply flex min-h-[86px] items-center justify-between gap-6 border-b bg-card/95 px-6 py-[18px] backdrop-blur-md max-[760px]:grid max-[760px]:grid-cols-1 max-[760px]:items-stretch max-[760px]:p-4;
+  }
+
+  .topbar h1,
+  .ticket-rail h2,
+  .detail-pane h2,
+  .run-console h2,
+  .approval-panel h3,
+  .ledger-preview h3,
+  .manual-panel h3,
+  .outbox-panel h3 {
+    @apply m-0 tracking-normal;
+  }
+
+  .topbar h1 {
+    @apply text-[clamp(1.35rem,2vw,2.2rem)] leading-[1.05];
+  }
+
+  .eyebrow {
+    @apply mb-1.5 mt-0 text-[0.72rem] font-extrabold uppercase tracking-[0.08em] text-muted-foreground;
+  }
+
+  .operator-strip {
+    @apply grid min-w-[min(100%,260px)] justify-items-end gap-0.5 rounded-lg border bg-card px-3 py-2.5 max-[760px]:justify-items-start;
+  }
+
+  .operator-strip span {
+    @apply text-[0.82rem] text-muted-foreground;
+  }
+
+  .operator-strip strong {
+    @apply text-[0.95rem];
+  }
+
+  .workspace-grid {
+    @apply grid min-h-0 flex-1 grid-cols-[minmax(280px,340px)_minmax(360px,1fr)_minmax(320px,390px)] border-b max-[1120px]:grid-cols-[minmax(260px,320px)_minmax(0,1fr)] max-[760px]:grid-cols-1;
+  }
+
+  .ticket-rail,
+  .detail-pane,
+  .run-console {
+    @apply min-w-0 overflow-auto p-[18px] max-[760px]:p-3.5;
+  }
+
+  .ticket-rail,
+  .detail-pane {
+    @apply border-r max-[760px]:border-b max-[760px]:border-r-0;
+  }
+
+  .ticket-rail {
+    @apply bg-card/85;
+  }
+
+  .detail-pane {
+    @apply bg-background/75;
+  }
+
+  .run-console {
+    @apply grid content-start gap-3.5 bg-console text-console-foreground max-[1120px]:col-span-full max-[1120px]:border-t max-[760px]:col-auto;
+  }
+
+  .run-console .eyebrow {
+    @apply text-console-muted;
+  }
+
+  .rail-header,
+  .detail-head,
+  .console-head,
+  .ticket-row-top,
+  .detail-actions,
+  .action-row,
+  .step-head {
+    @apply flex items-start justify-between gap-3;
+  }
+
+  .rail-header,
+  .console-head {
+    @apply items-center;
+  }
+
+  .rail-header {
+    @apply mb-3.5;
+  }
+
+  .filters {
+    @apply mb-4 grid grid-cols-1 gap-2;
+  }
+
+  .ticket-list {
+    @apply grid gap-2.5;
+  }
+
+  .ticket-row {
+    @apply grid w-full cursor-pointer gap-2 rounded-lg border border-l-4 border-l-transparent bg-card p-3 text-left text-card-foreground shadow-[0_1px_0_oklch(0.21_0.022_157.2_/_0.03)] transition hover:border-muted-foreground/45 hover:border-l-primary hover:shadow-[0_18px_40px_oklch(0.21_0.022_157.2_/_0.08)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
+  }
+
+  .ticket-row.selected {
+    @apply border-muted-foreground/45 border-l-primary shadow-[0_18px_40px_oklch(0.21_0.022_157.2_/_0.08)];
+  }
+
+  .ticket-row strong,
+  .run-status strong,
+  .queue-row strong,
+  .ledger-row strong,
+  .ledger-row code,
+  .integration-status strong,
+  .integration-status p {
+    @apply break-words;
+  }
+
+  .ticket-meta,
+  .ticket-date {
+    @apply text-[0.82rem] leading-[1.3] text-muted-foreground;
+  }
+
+  .detail-card,
+  .empty-detail {
+    @apply min-h-full rounded-lg border bg-card/95 p-6 shadow-[0_18px_40px_oklch(0.21_0.022_157.2_/_0.08)] max-[760px]:min-h-0 max-[760px]:p-4;
+  }
+
+  .detail-card h2,
+  .empty-detail h2 {
+    @apply max-w-[980px] text-[clamp(1.6rem,2.6vw,3rem)] leading-[1.05] max-[760px]:text-[1.6rem] max-[760px]:leading-[1.12];
+  }
+
+  .status-stack,
+  .tag-line {
+    @apply flex flex-wrap gap-2;
+  }
+
+  .status-stack {
+    @apply justify-end max-[760px]:justify-start;
+  }
+
+  .customer-line {
+    @apply mb-0 mt-3.5 font-extrabold text-primary;
+  }
+
+  .report {
+    @apply my-[18px] max-w-[76ch] text-base leading-relaxed text-foreground/90;
+  }
+
+  .tag-line {
+    @apply mb-[22px];
+  }
+
+  .tag-line span {
+    @apply rounded-full border bg-muted/40 px-2.5 py-1 text-[0.78rem] font-bold text-muted-foreground;
+  }
+
+  .info-grid {
+    @apply grid grid-cols-3 gap-px overflow-hidden rounded-lg border bg-border max-[760px]:grid-cols-1;
+  }
+
+  .info-cell {
+    @apply grid min-w-0 gap-1 bg-card p-3;
+  }
+
+  .info-cell span {
+    @apply text-[0.74rem] font-bold uppercase text-muted-foreground;
+  }
+
+  .info-cell strong {
+    @apply break-words text-[0.95rem];
+  }
+
+  .notes-band {
+    @apply mt-5 border-l-4 border-l-primary bg-accent/60 p-4;
+  }
+
+  .notes-band p:last-child {
+    @apply m-0 leading-normal text-accent-foreground;
+  }
+
+  .detail-actions {
+    @apply mt-6;
+  }
+
+  .signal {
+    @apply size-3 rounded-full bg-console-muted/45 shadow-[0_0_0_5px_oklch(1_0_0_/_0.05)];
+  }
+
+  .signal.pending {
+    @apply bg-amber-400;
+  }
+
+  .signal.active {
+    @apply bg-emerald-400;
+  }
+
+  .run-status,
+  .approval-panel,
+  .manual-panel,
+  .outbox-panel,
+  .ledger-preview {
+    @apply rounded-lg border border-white/15 bg-white/[0.06] p-3.5;
+  }
+
+  .run-status {
+    @apply grid gap-1;
+  }
+
+  .run-status span,
+  .run-status em,
+  .ledger-preview p,
+  .outbox-panel p,
+  .approval-panel p {
+    @apply text-console-muted;
+  }
+
+  .run-status em {
+    @apply text-[0.78rem] not-italic;
+  }
+
+  .approval-panel h3,
+  .manual-panel h3,
+  .outbox-panel h3,
+  .ledger-preview h3 {
+    @apply text-base;
+  }
+
+  .approval-panel p,
+  .manual-panel p,
+  .outbox-panel p,
+  .ledger-preview p {
+    @apply mb-0 mt-2 leading-normal;
+  }
+
+  .console-error {
+    @apply text-red-200;
+  }
+
+  .action-row {
+    @apply mt-3 justify-start;
+  }
+
+  .action-row.wrap {
+    @apply flex-wrap;
+  }
+
+  .step-panel,
+  .manual-panel {
+    @apply grid gap-3;
+  }
+
+  .step-panel.blocked-step {
+    @apply border-red-300/40 bg-red-950/30;
+  }
+
+  .blocked-copy {
+    @apply m-0 font-extrabold text-red-200;
+  }
+
+  .command-preview,
+  .ledger-row code,
+  .terminal-shell pre {
+    @apply whitespace-pre-wrap break-words font-mono;
+  }
+
+  .command-preview {
+    @apply m-0 rounded-lg border border-white/10 bg-black/45 p-2.5 text-[0.82rem] leading-normal text-emerald-100;
+  }
+
+  .signal-copy {
+    @apply text-console-foreground/90;
+  }
+
+  .safety-line {
+    @apply grid grid-cols-[auto_1fr] items-start gap-2 rounded-lg bg-white/[0.08] px-2.5 py-2;
+  }
+
+  .safety-line strong {
+    @apply text-[0.72rem] font-extrabold uppercase text-emerald-200;
+  }
+
+  .safety-line span {
+    @apply leading-snug text-console-foreground/90;
+  }
+
+  .safety-notes {
+    @apply m-0 pl-[18px] text-[0.82rem] leading-normal text-console-muted;
+  }
+
+  .backup-gate {
+    @apply grid gap-1 rounded-lg border border-amber-300/35 bg-amber-400/10 p-2.5;
+  }
+
+  .backup-gate span {
+    @apply text-[0.78rem] font-extrabold uppercase text-amber-100;
+  }
+
+  .backup-gate strong {
+    @apply break-words text-console-foreground;
+  }
+
+  .backup-gate.created,
+  .backup-gate.not-applicable {
+    @apply border-emerald-300/35 bg-emerald-400/10;
+  }
+
+  .backup-gate.created span,
+  .backup-gate.not-applicable span {
+    @apply text-emerald-200;
+  }
+
+  .backup-gate.blocked {
+    @apply border-red-300/35 bg-red-400/10;
+  }
+
+  .backup-gate.blocked span {
+    @apply text-red-200;
+  }
+
+  .backup-decision {
+    @apply mt-1 grid gap-2;
+  }
+
+  .backup-decision button {
+    @apply w-fit;
+  }
+
+  .outbox-panel {
+    @apply grid gap-3 border-red-300/35 bg-red-400/10;
+  }
+
+  .queue-count {
+    @apply grid min-h-8 min-w-8 place-items-center rounded-full bg-red-200 font-black text-console;
+  }
+
+  .queue-list,
+  .ledger-list,
+  .activity-form {
+    @apply grid gap-2.5;
+  }
+
+  .ledger-list {
+    @apply mt-3;
+  }
+
+  .queue-row,
+  .ledger-row,
+  .integration-status {
+    @apply grid gap-2 rounded-lg border border-white/10 bg-black/35 p-2.5;
+  }
+
+  .queue-row.failed,
+  .validation-expectation.pending,
+  .integration-status.activity_created,
+  .integration-status.failed {
+    @apply border-amber-300/35 bg-amber-400/10;
+  }
+
+  .queue-row.dead_letter,
+  .validation-row.failed,
+  .validation-expectation.failed,
+  .integration-status.dead_letter {
+    @apply border-red-300/35 bg-red-950/30;
+  }
+
+  .validation-row.passed,
+  .validation-expectation.passed,
+  .integration-status.completed {
+    @apply border-emerald-300/35 bg-emerald-400/10;
+  }
+
+  .ledger-row p,
+  .integration-status p {
+    @apply m-0;
+  }
+
+  .ledger-row code {
+    @apply rounded-md bg-black/45 px-2 py-1.5 text-[0.76rem] leading-normal text-emerald-100;
+  }
+
+  .ledger-kicker,
+  .ledger-meta {
+    @apply block text-[0.72rem] font-extrabold uppercase leading-[1.3] text-console-muted;
+  }
+
+  .ledger-meta {
+    @apply normal-case;
+  }
+
+  .validation-row.passed .ledger-kicker,
+  .validation-expectation.passed .ledger-kicker {
+    @apply text-emerald-200;
+  }
+
+  .validation-row.failed .ledger-kicker,
+  .validation-expectation.failed .ledger-kicker,
+  .queue-row.dead_letter .ledger-kicker {
+    @apply text-red-200;
+  }
+
+  .validation-expectation.pending .ledger-kicker,
+  .queue-row.failed .ledger-kicker {
+    @apply text-amber-100;
+  }
+
+  .activity-form {
+    @apply mt-3;
+  }
+
+  .terminal-shell {
+    @apply overflow-hidden rounded-lg border border-white/15 bg-black/45;
+  }
+
+  .terminal-bar {
+    @apply flex gap-1.5 border-b border-white/10 px-3 py-2.5;
+  }
+
+  .terminal-bar span {
+    @apply size-[9px] rounded-full bg-console-muted/55;
+  }
+
+  .terminal-transcript {
+    @apply min-h-[150px] overflow-auto;
+  }
+
+  .terminal-shell pre {
+    @apply m-0 p-3.5 text-[0.86rem] leading-relaxed text-emerald-100;
+  }
+
+  .terminal-shell pre + pre {
+    @apply border-t border-white/10;
+  }
+
+  .transcript-link {
+    @apply w-fit text-[0.78rem] font-extrabold text-emerald-200 no-underline hover:underline;
+  }
+
+  .state-block {
+    @apply rounded-lg border border-dashed border-muted-foreground/45 bg-card p-3.5 leading-normal text-muted-foreground;
+  }
+
+  .error-state {
+    @apply border-destructive/45 bg-destructive/10 text-destructive;
+  }
+
+  .skeleton-stack {
+    @apply grid gap-2.5;
+  }
+
+  .skeleton-stack.wide {
+    @apply mt-7;
+  }
+
+  .console-field {
+    @apply grid gap-1.5 text-[0.72rem] font-extrabold uppercase text-console-muted;
+  }
+
+  .console-field input,
+  .console-field textarea,
+  .console-field select {
+    @apply border-white/15 bg-black/45 text-console-foreground placeholder:text-console-muted focus-visible:ring-emerald-300;
+  }
+
+  .console-field textarea {
+    @apply font-mono text-[0.82rem] leading-normal;
+  }
+
+  .console-field select {
+    color-scheme: dark;
+  }
+
+  @media (max-width: 760px) {
+    .detail-head,
+    .rail-header,
+    .ticket-row-top {
+      @apply flex-col;
+    }
+  }
+}

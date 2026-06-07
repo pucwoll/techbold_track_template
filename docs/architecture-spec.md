@@ -307,6 +307,8 @@ Recommended tables:
 - `command_executions`: one row per approved SSH command execution.
 - `command_output_chunks`: append-only sanitized stdout/stderr chunks for live terminal replay.
 - `inspected_sources`: append-only ledger of log files, journal sources, configs, metadata checks, and endpoint checks inspected as evidence.
+- `validation_results`: command-linked validation checks and outcomes.
+- `validation_expectations`: required validation suite items persisted after a fix.
 - `backup_records`: targeted pre-change backups and rollback metadata for files/settings modified during a run.
 - `activity_drafts`: generated and technician-edited Phoenix activity payloads.
 - `integration_requests`: Phoenix, SSH, and LLM request metadata.
@@ -319,9 +321,9 @@ Important constraints:
 - A command cannot enter `execution_requested` unless the step is approved.
 - A step cannot be approved if safety verdict is `blocked`.
 - A run can have only one active pending step.
-- Activity submission requires a completed validation event or explicit technician override event.
+- Activity submission requires a completed validation suite.
 - Every inspected source must reference the command execution that produced it.
-- Every medium-risk persistent change should reference a backup record or explicit `backup.not_applicable` event.
+- Every medium-risk persistent change should reference a backup record or a `backup_records` row with `backup_type = 'not_applicable'`.
 
 Indexes should support:
 

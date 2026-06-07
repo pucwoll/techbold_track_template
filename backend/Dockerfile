@@ -9,9 +9,15 @@ ENV UV_COMPILE_BYTECODE=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     PATH="/app/.venv/bin:$PATH"
 
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends libpq5 openssh-client \
+    && rm -rf /var/lib/apt/lists/*
+
 COPY pyproject.toml uv.lock ./
 RUN uv sync --locked --no-dev --no-install-project
 
+COPY alembic.ini ./alembic.ini
+COPY alembic ./alembic
 COPY app ./app
 RUN useradd --create-home --shell /usr/sbin/nologin appuser
 

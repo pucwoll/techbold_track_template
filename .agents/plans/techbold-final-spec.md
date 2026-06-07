@@ -356,6 +356,18 @@ Frontend-facing API:
 - `GET /api/runs/{run_id}/events`
 - `GET /api/runs/{run_id}/stream`
 - `POST /api/runs/{run_id}/connect/approve`
+- `GET /api/runs/{run_id}/commands`
+- `GET /api/runs/{run_id}/output-chunks`
+- `GET /api/runs/{run_id}/evidence`
+- `GET /api/runs/{run_id}/backups`
+- `POST /api/runs/{run_id}/backups/not-applicable`
+- `POST /api/runs/{run_id}/backups/{backup_record_id}/restore`
+- `GET /api/runs/{run_id}/validation-results`
+- `GET /api/runs/{run_id}/validation-expectations`
+- `GET /api/runs/{run_id}/outbox-events`
+- `GET /api/runs/{run_id}/outbox-events/dead-letter`
+- `GET /api/runs/{run_id}/integration-requests`
+- `GET /api/runs/{run_id}/integration-requests/{integration_request_id}`
 - `POST /api/runs/{run_id}/steps/{step_id}/approve`
 - `POST /api/runs/{run_id}/steps/{step_id}/edit-and-approve`
 - `POST /api/runs/{run_id}/steps/{step_id}/reject`
@@ -363,8 +375,40 @@ Frontend-facing API:
 - `POST /api/runs/{run_id}/retry`
 - `POST /api/runs/{run_id}/abort`
 - `POST /api/runs/{run_id}/activity/draft`
+- `POST /api/runs/{run_id}/activity/save`
 - `POST /api/runs/{run_id}/activity/submit`
 - `PATCH /api/tickets/{ticket_id}/status`
+
+Streaming and polling semantics:
+
+- `GET /api/runs/{run_id}/stream?after_id=` is the primary SSE live-update endpoint.
+- `GET /api/runs/{run_id}/events?after_id=` is the polling fallback and uses the same
+  monotonic event id cursor, so frontend reconnection or non-SSE polling can resume
+  without losing event order.
+- `GET /api/runs/{run_id}/output-chunks` is frontend-facing and returns sanitized
+  `command_output_chunks` ordered by command execution and sequence for terminal
+  transcript catch-up or polling fallback.
+
+Worker visibility APIs:
+
+- `GET /api/runs/{run_id}/outbox-events` returns failed and dead-letter worker events by
+  default, with `status=` filters for specific outbox states.
+- `GET /api/runs/{run_id}/outbox-events/dead-letter` returns only unrecoverable
+  dead-letter events.
+- `GET /api/runs/{run_id}/integration-requests` lists durable Phoenix submission
+  requests for a run.
+- `GET /api/runs/{run_id}/integration-requests/{integration_request_id}` returns one
+  integration request status after Phoenix activity submission moves to the worker.
+
+Restore API and event semantics:
+
+- `POST /api/runs/{run_id}/backups/{backup_record_id}/restore` creates a normal proposed
+  command step using the backup record's restore command and phase `restore`.
+- The event stream records `backup.restore_proposed` when the restore proposal is created.
+- Restore execution follows the same safety classification, technician approval, SSH
+  execution, redaction, and terminal transcript path as other commands.
+- The event stream records `backup.restored` only after the approved restore command
+  completes successfully.
 
 ## Postgres Tables
 
@@ -380,6 +424,8 @@ Core tables:
 - `command_executions`
 - `command_output_chunks`
 - `inspected_sources`
+- `validation_results`
+- `validation_expectations`
 - `backup_records`
 - `activity_drafts`
 - `integration_requests`
@@ -393,8 +439,8 @@ Important constraints:
 - one active pending step per run
 - output chunks reference existing command execution
 - inspected source references command execution
-- medium-risk persistent change references backup record or `backup.not_applicable`
-- activity submission requires validation or explicit technician override event
+- medium-risk persistent change references a backup record or a `backup_records` row with `backup_type = 'not_applicable'`
+- activity submission requires a completed validation suite
 
 ## Safety Gates
 

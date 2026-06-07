@@ -20,6 +20,7 @@ services:
     build:
       context: ./backend
     image: techbold-backend:dev
+    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload", "--reload-dir", "/app/app"]
     env_file:
       - path: .env
         required: false   # copy .env.example -> .env; the stack still starts without it
@@ -27,8 +28,10 @@ services:
       DATABASE_URL: ${DATABASE_URL:-postgresql://techbold:techbold_dev_password@postgres:5432/techbold}
       LOG_LEVEL: ${LOG_LEVEL:-INFO}
     ports:
-      - "8000:8000"
+      - "${BACKEND_HOST_PORT:-8000}:8000"
     volumes:
+      # Live-reload backend API code without baking secrets into the image.
+      - ./backend/app:/app/app
       # Your SSH private key(s). Put your .pem in ./keys (git-ignored).
       - ./keys:/keys:ro
     depends_on:
@@ -56,6 +59,7 @@ services:
       LOG_LEVEL: ${LOG_LEVEL:-INFO}
     command: ["python", "-m", "app.worker"]
     volumes:
+      - ./backend/app:/app/app
       - ./keys:/keys:ro
     depends_on:
       postgres:
@@ -73,8 +77,13 @@ services:
       target: development
     environment:
       VITE_API_BASE: ${VITE_API_BASE:-http://localhost:8000}
+      CHOKIDAR_USEPOLLING: ${CHOKIDAR_USEPOLLING:-true}
     ports:
-      - "5173:5173"
+      - "${FRONTEND_HOST_PORT:-5173}:5173"
+    volumes:
+      # Bind source for Vite HMR while preserving container-native dependencies.
+      - ./frontend:/app
+      - frontend-node-modules:/app/node_modules
     depends_on:
       backend-api:
         condition: service_healthy
@@ -89,6 +98,7 @@ services:
 
 volumes:
   postgres-data:
+  frontend-node-modules:
 
 networks:
   techbold:
