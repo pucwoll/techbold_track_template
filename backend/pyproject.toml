@@ -8,4 +8,11 @@ dependencies = [
     "fastapi==0.115.6",
     "pydantic-settings==2.7.1",
     "uvicorn[standard]==0.34.0",
+    "httpx",
+    "asyncssh",
+    "openai",
+    "langgraph",
+    "langchain-core",
+    "langchain-openai",
+    "python-dotenv"
 ]

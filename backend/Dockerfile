@@ -10,7 +10,7 @@ ENV UV_COMPILE_BYTECODE=1 \
     PATH="/app/.venv/bin:$PATH"
 
 COPY pyproject.toml uv.lock ./
-RUN uv sync --locked --no-dev --no-install-project
+RUN uv lock && uv sync --no-dev --no-install-project
 
 COPY app ./app
 RUN useradd --create-home --shell /usr/sbin/nologin appuser
