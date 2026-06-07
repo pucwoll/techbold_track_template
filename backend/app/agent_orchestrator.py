@@ -1069,7 +1069,7 @@ def _validation_step_for_expectations(
         endpoint = target if target.startswith(("http://", "https://")) else _endpoint_validation_command(run)
         return _step(
             phase="validation",
-            command=f"curl -I {endpoint}",
+            command=f"curl -sS -i {endpoint}",
             purpose="Validate the required customer-facing benefit check.",
             hypothesis=expectation.relation_to_customer_symptom,
             expected_signal=expectation.expected_result,
@@ -1312,8 +1312,8 @@ def _port_setting_from_command(command: CommandExecution) -> int | None:
 def _endpoint_validation_command(run: Run) -> str:
     endpoint = _ticket_endpoint(run)
     if endpoint:
-        return f"curl -I {endpoint}"
+        return f"curl -sS -i {endpoint}"
     notes = str(run.customer_system_snapshot.get("system", {}).get("notes", "")).lower()
     if "https" in notes:
-        return "curl -I https://localhost"
-    return "curl -I http://localhost"
+        return "curl -sS -i https://localhost"
+    return "curl -sS -i http://localhost"

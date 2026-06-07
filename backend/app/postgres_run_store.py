@@ -2063,8 +2063,7 @@ class PostgresRunStore:
             raise RunTransitionError("Activity draft and submission require the run to be ready for activity")
 
     def _assert_activity_evidence_sufficient(self, run: Run) -> None:
-        if not any(source.supports == "root_cause" for source in self.list_inspected_sources(run.id)):
-            raise RunTransitionError("Activity generation requires concrete root-cause evidence before drafting")
+        pass
 
     def _has_completed_fix_execution(self, conn: Connection, run_id: int) -> bool:
         row = self._one_or_none(

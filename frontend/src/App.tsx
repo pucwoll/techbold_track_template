@@ -16,6 +16,7 @@ import {
   Terminal,
   Ticket as TicketIcon,
   XCircle,
+  Shield,
 } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
@@ -907,10 +908,20 @@ export default function App() {
   return (
     <TooltipProvider delayDuration={150}>
       <div className="app-shell">
+        {/* Abstract Background Elements */}
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-purple-600/10 rounded-full blur-[150px] pointer-events-none -z-10"></div>
+        <div className="absolute bottom-1/4 left-0 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[150px] pointer-events-none -z-10"></div>
+        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.015] pointer-events-none -z-10 mix-blend-overlay"></div>
+
       <header className="topbar">
-        <div>
-          <p className="eyebrow">techbold control plane</p>
-          <h1>AI Service Desk Autopilot</h1>
+        <div className="flex items-center gap-3 group">
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-[0_0_15px_rgba(59,130,246,0.5)] group-hover:shadow-[0_0_25px_rgba(59,130,246,0.7)] transition-shadow">
+            <Shield size={16} className="text-white" />
+          </div>
+          <div className="flex flex-col">
+            <span className="font-bold text-sm tracking-widest uppercase text-white/90 group-hover:text-white transition-colors">Techbold</span>
+            <span className="text-[10px] font-mono text-blue-400/80 uppercase tracking-widest">Autopilot v2.0</span>
+          </div>
         </div>
         <div className="operator-strip" aria-label="Technician identity">
           <span>{me ? `${me.firstname} ${me.lastname}` : "No technician"}</span>

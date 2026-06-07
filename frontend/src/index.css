@@ -2,60 +2,7 @@
 
 @custom-variant dark (&:is(.dark *));
 
-:root {
-  font-family: Aptos, "Segoe UI", "Helvetica Neue", sans-serif;
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  --background: oklch(0.975 0.009 151.2);
-  --foreground: oklch(0.21 0.022 157.2);
-  --card: oklch(0.995 0.004 151.2);
-  --card-foreground: oklch(0.21 0.022 157.2);
-  --popover: oklch(0.995 0.004 151.2);
-  --popover-foreground: oklch(0.21 0.022 157.2);
-  --primary: oklch(0.45 0.101 177.5);
-  --primary-foreground: oklch(0.99 0.004 151.2);
-  --secondary: oklch(0.92 0.018 158.8);
-  --secondary-foreground: oklch(0.25 0.03 158.8);
-  --muted: oklch(0.92 0.014 158.8);
-  --muted-foreground: oklch(0.5 0.025 158.8);
-  --accent: oklch(0.91 0.042 171.4);
-  --accent-foreground: oklch(0.24 0.052 174.6);
-  --destructive: oklch(0.57 0.215 27.3);
-  --destructive-foreground: oklch(0.99 0.004 151.2);
-  --border: oklch(0.88 0.014 158.8);
-  --input: oklch(0.88 0.014 158.8);
-  --ring: oklch(0.58 0.111 174.6);
-  --radius: 0.5rem;
-  --console: oklch(0.18 0.028 157.2);
-  --console-foreground: oklch(0.975 0.021 153.2);
-  --console-muted: oklch(0.75 0.035 165.2);
-}
-
-.dark {
-  --background: oklch(0.18 0.028 157.2);
-  --foreground: oklch(0.975 0.021 153.2);
-  --card: oklch(0.22 0.03 157.2);
-  --card-foreground: oklch(0.975 0.021 153.2);
-  --popover: oklch(0.22 0.03 157.2);
-  --popover-foreground: oklch(0.975 0.021 153.2);
-  --primary: oklch(0.7 0.119 164.3);
-  --primary-foreground: oklch(0.16 0.028 157.2);
-  --secondary: oklch(0.27 0.029 157.2);
-  --secondary-foreground: oklch(0.975 0.021 153.2);
-  --muted: oklch(0.27 0.029 157.2);
-  --muted-foreground: oklch(0.75 0.035 165.2);
-  --accent: oklch(0.31 0.047 171.4);
-  --accent-foreground: oklch(0.975 0.021 153.2);
-  --destructive: oklch(0.68 0.19 24.8);
-  --destructive-foreground: oklch(0.99 0.004 151.2);
-  --border: oklch(1 0 0 / 16%);
-  --input: oklch(1 0 0 / 18%);
-  --ring: oklch(0.72 0.118 164.3);
-}
-
-@theme inline {
-  --font-sans: Aptos, "Segoe UI", "Helvetica Neue", sans-serif;
-  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+@theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -83,6 +30,54 @@
   --radius-lg: var(--radius);
 }
 
+:root {
+  --background: #030303;
+  --foreground: #ededed;
+  --card: #0a0a0c;
+  --card-foreground: #ededed;
+  --popover: #0a0a0c;
+  --popover-foreground: #ededed;
+  --primary: #3b82f6;
+  --primary-foreground: #ffffff;
+  --secondary: #121214;
+  --secondary-foreground: #ededed;
+  --muted: #121214;
+  --muted-foreground: #a1a1aa;
+  --accent: #121214;
+  --accent-foreground: #ededed;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: rgba(255, 255, 255, 0.06);
+  --input: rgba(255, 255, 255, 0.12);
+  --ring: rgba(59, 130, 246, 0.5);
+  --radius: 0.75rem;
+  --console: #0A0A0A;
+  --console-foreground: #4ade80;
+  --console-muted: #6b7280;
+}
+
+.dark {
+  --background: #030303;
+  --foreground: #ededed;
+  --card: #0a0a0c;
+  --card-foreground: #ededed;
+  --popover: #0a0a0c;
+  --popover-foreground: #ededed;
+  --primary: #3b82f6;
+  --primary-foreground: #ffffff;
+  --secondary: #121214;
+  --secondary-foreground: #ededed;
+  --muted: #121214;
+  --muted-foreground: #a1a1aa;
+  --accent: #121214;
+  --accent-foreground: #ededed;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: rgba(255, 255, 255, 0.06);
+  --input: rgba(255, 255, 255, 0.12);
+  --ring: rgba(59, 130, 246, 0.5);
+}
+
 @layer base {
   * {
     @apply box-border border-border;
@@ -95,11 +90,7 @@
   }
 
   body {
-    @apply m-0 bg-background text-foreground antialiased;
-    background-image:
-      linear-gradient(90deg, color-mix(in oklch, var(--primary) 10%, transparent) 1px, transparent 1px),
-      linear-gradient(0deg, color-mix(in oklch, var(--primary) 8%, transparent) 1px, transparent 1px);
-    background-size: 28px 28px;
+    @apply m-0 bg-background text-foreground antialiased font-sans;
   }
 
   button,
@@ -110,13 +101,14 @@
   }
 }
 
+/* Minimal Brutalism / Command Center Styles for App.tsx elements */
 @layer components {
   .app-shell {
-    @apply flex min-h-screen flex-col;
+    @apply flex min-h-screen flex-col relative w-full overflow-hidden z-10;
   }
 
   .topbar {
-    @apply flex min-h-[86px] items-center justify-between gap-6 border-b bg-card/95 px-6 py-[18px] backdrop-blur-md max-[760px]:grid max-[760px]:grid-cols-1 max-[760px]:items-stretch max-[760px]:p-4;
+    @apply flex items-center justify-between gap-6 border-b border-white/10 bg-background/80 px-6 py-4 backdrop-blur-xl sticky top-0 z-50;
   }
 
   .topbar h1,
@@ -127,58 +119,43 @@
   .ledger-preview h3,
   .manual-panel h3,
   .outbox-panel h3 {
-    @apply m-0 tracking-normal;
+    @apply m-0 tracking-tight;
   }
 
   .topbar h1 {
-    @apply text-[clamp(1.35rem,2vw,2.2rem)] leading-[1.05];
+    @apply text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-white/60;
   }
 
   .eyebrow {
-    @apply mb-1.5 mt-0 text-[0.72rem] font-extrabold uppercase tracking-[0.08em] text-muted-foreground;
+    @apply mb-1.5 mt-0 text-[10px] font-mono font-bold uppercase tracking-widest text-muted-foreground;
   }
 
   .operator-strip {
-    @apply grid min-w-[min(100%,260px)] justify-items-end gap-0.5 rounded-lg border bg-card px-3 py-2.5 max-[760px]:justify-items-start;
+    @apply flex items-center gap-4 text-sm font-medium text-muted-foreground;
   }
 
   .operator-strip span {
-    @apply text-[0.82rem] text-muted-foreground;
+    @apply text-xs;
   }
 
   .operator-strip strong {
-    @apply text-[0.95rem];
+    @apply text-sm text-white;
   }
 
   .workspace-grid {
-    @apply grid min-h-0 flex-1 grid-cols-[minmax(280px,340px)_minmax(360px,1fr)_minmax(320px,390px)] border-b max-[1120px]:grid-cols-[minmax(260px,320px)_minmax(0,1fr)] max-[760px]:grid-cols-1;
-  }
-
-  .ticket-rail,
-  .detail-pane,
-  .run-console {
-    @apply min-w-0 overflow-auto p-[18px] max-[760px]:p-3.5;
-  }
-
-  .ticket-rail,
-  .detail-pane {
-    @apply border-r max-[760px]:border-b max-[760px]:border-r-0;
+    @apply grid min-h-0 flex-1 grid-cols-1 lg:grid-cols-12 gap-6 max-w-[1800px] w-full mx-auto px-6 py-6;
   }
 
   .ticket-rail {
-    @apply bg-card/85;
+    @apply lg:col-span-3 flex flex-col gap-4 overflow-y-auto min-h-0 pb-6 pr-2;
   }
 
   .detail-pane {
-    @apply bg-background/75;
+    @apply lg:col-span-4 flex flex-col gap-6 overflow-y-auto min-h-0 pb-6 pr-2;
   }
 
   .run-console {
-    @apply grid content-start gap-3.5 bg-console text-console-foreground max-[1120px]:col-span-full max-[1120px]:border-t max-[760px]:col-auto;
-  }
-
-  .run-console .eyebrow {
-    @apply text-console-muted;
+    @apply lg:col-span-5 flex flex-col gap-6 overflow-y-auto min-h-0 bg-[#0a0a0c] rounded-2xl shadow-2xl border border-white/10 relative backdrop-blur-3xl p-6;
   }
 
   .rail-header,
@@ -196,24 +173,28 @@
     @apply items-center;
   }
 
+  .console-head {
+    @apply bg-black/40 backdrop-blur-md px-6 py-4 border-b border-white/10 flex items-center justify-between z-20;
+  }
+
   .rail-header {
-    @apply mb-3.5;
+    @apply mb-2;
   }
 
   .filters {
-    @apply mb-4 grid grid-cols-1 gap-2;
+    @apply mb-4 grid grid-cols-1 gap-3 bg-card/80 backdrop-blur-xl p-4 rounded-xl border border-border shadow-2xl;
   }
 
   .ticket-list {
-    @apply grid gap-2.5;
+    @apply grid gap-3;
   }
 
   .ticket-row {
-    @apply grid w-full cursor-pointer gap-2 rounded-lg border border-l-4 border-l-transparent bg-card p-3 text-left text-card-foreground shadow-[0_1px_0_oklch(0.21_0.022_157.2_/_0.03)] transition hover:border-muted-foreground/45 hover:border-l-primary hover:shadow-[0_18px_40px_oklch(0.21_0.022_157.2_/_0.08)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
+    @apply relative grid w-full cursor-pointer gap-3 rounded-xl border border-border bg-card p-4 text-left text-card-foreground shadow-lg transition-all duration-300 hover:border-white/20 hover:shadow-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring;
   }
 
   .ticket-row.selected {
-    @apply border-muted-foreground/45 border-l-primary shadow-[0_18px_40px_oklch(0.21_0.022_157.2_/_0.08)];
+    @apply border-primary/50 bg-primary/5 shadow-[0_0_20px_rgba(59,130,246,0.15)];
   }
 
   .ticket-row strong,
@@ -226,19 +207,26 @@
     @apply break-words;
   }
 
+  .ticket-row-top strong {
+    @apply text-lg font-bold text-gray-100 transition-colors line-clamp-1;
+  }
+  .ticket-row:hover .ticket-row-top strong {
+    @apply text-white;
+  }
+
   .ticket-meta,
   .ticket-date {
-    @apply text-[0.82rem] leading-[1.3] text-muted-foreground;
+    @apply text-xs font-mono font-medium text-muted-foreground;
   }
 
   .detail-card,
   .empty-detail {
-    @apply min-h-full rounded-lg border bg-card/95 p-6 shadow-[0_18px_40px_oklch(0.21_0.022_157.2_/_0.08)] max-[760px]:min-h-0 max-[760px]:p-4;
+    @apply rounded-2xl border border-border bg-card p-6 shadow-xl relative overflow-hidden;
   }
 
   .detail-card h2,
   .empty-detail h2 {
-    @apply max-w-[980px] text-[clamp(1.6rem,2.6vw,3rem)] leading-[1.05] max-[760px]:text-[1.6rem] max-[760px]:leading-[1.12];
+    @apply text-3xl font-black text-white mb-4 tracking-tight leading-snug;
   }
 
   .status-stack,
@@ -247,15 +235,15 @@
   }
 
   .status-stack {
-    @apply justify-end max-[760px]:justify-start;
+    @apply justify-end;
   }
 
   .customer-line {
-    @apply mb-0 mt-3.5 font-extrabold text-primary;
+    @apply mb-0 mt-3.5 text-xs font-bold text-gray-400 bg-white/5 px-2.5 py-1 rounded-md w-fit;
   }
 
   .report {
-    @apply my-[18px] max-w-[76ch] text-base leading-relaxed text-foreground/90;
+    @apply my-6 bg-black/40 p-4 rounded-xl border border-border text-sm leading-relaxed font-medium text-gray-300 shadow-inner;
   }
 
   .tag-line {
@@ -263,47 +251,47 @@
   }
 
   .tag-line span {
-    @apply rounded-full border bg-muted/40 px-2.5 py-1 text-[0.78rem] font-bold text-muted-foreground;
+    @apply rounded-md border border-white/5 bg-white/5 px-2.5 py-1 text-[10px] font-mono font-bold uppercase tracking-widest text-muted-foreground;
   }
 
   .info-grid {
-    @apply grid grid-cols-3 gap-px overflow-hidden rounded-lg border bg-border max-[760px]:grid-cols-1;
+    @apply grid grid-cols-2 gap-4 mt-6;
   }
 
   .info-cell {
-    @apply grid min-w-0 gap-1 bg-card p-3;
+    @apply bg-black/30 border border-border p-4 rounded-xl flex items-center justify-between hover:border-primary/30 transition-colors;
   }
 
   .info-cell span {
-    @apply text-[0.74rem] font-bold uppercase text-muted-foreground;
+    @apply text-[10px] font-bold uppercase tracking-widest text-muted-foreground;
   }
 
   .info-cell strong {
-    @apply break-words text-[0.95rem];
+    @apply font-mono text-sm font-medium text-gray-200;
   }
 
   .notes-band {
-    @apply mt-5 border-l-4 border-l-primary bg-accent/60 p-4;
+    @apply mt-6 pt-5 border-t border-border;
   }
 
   .notes-band p:last-child {
-    @apply m-0 leading-normal text-accent-foreground;
+    @apply text-sm text-gray-400 italic bg-black/20 p-3 rounded-lg border border-border mt-2;
   }
 
   .detail-actions {
-    @apply mt-6;
+    @apply mt-8;
   }
 
   .signal {
-    @apply size-3 rounded-full bg-console-muted/45 shadow-[0_0_0_5px_oklch(1_0_0_/_0.05)];
+    @apply relative flex h-2.5 w-2.5 rounded-full bg-console-muted/45;
   }
 
   .signal.pending {
-    @apply bg-amber-400;
+    @apply bg-yellow-500 shadow-[0_0_8px_rgba(234,179,8,0.8)];
   }
 
   .signal.active {
-    @apply bg-emerald-400;
+    @apply bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)];
   }
 
   .run-status,
@@ -311,11 +299,11 @@
   .manual-panel,
   .outbox-panel,
   .ledger-preview {
-    @apply rounded-lg border border-white/15 bg-white/[0.06] p-3.5;
+    @apply border-b border-white/5 p-6;
   }
 
   .run-status {
-    @apply grid gap-1;
+    @apply flex items-center gap-3 bg-black/20;
   }
 
   .run-status span,
@@ -323,33 +311,33 @@
   .ledger-preview p,
   .outbox-panel p,
   .approval-panel p {
-    @apply text-console-muted;
+    @apply text-muted-foreground text-sm;
   }
 
   .run-status em {
-    @apply text-[0.78rem] not-italic;
+    @apply text-xs font-mono not-italic ml-auto text-muted-foreground;
   }
 
   .approval-panel h3,
   .manual-panel h3,
   .outbox-panel h3,
   .ledger-preview h3 {
-    @apply text-base;
+    @apply text-lg font-bold text-white;
   }
 
   .approval-panel p,
   .manual-panel p,
   .outbox-panel p,
   .ledger-preview p {
-    @apply mb-0 mt-2 leading-normal;
+    @apply mb-0 mt-2 leading-relaxed;
   }
 
   .console-error {
-    @apply text-red-200;
+    @apply text-red-400 font-mono text-sm;
   }
 
   .action-row {
-    @apply mt-3 justify-start;
+    @apply mt-5 justify-start flex gap-3;
   }
 
   .action-row.wrap {
@@ -358,15 +346,15 @@
 
   .step-panel,
   .manual-panel {
-    @apply grid gap-3;
+    @apply grid gap-4;
   }
 
   .step-panel.blocked-step {
-    @apply border-red-300/40 bg-red-950/30;
+    @apply border-red-500/20 bg-red-500/5;
   }
 
   .blocked-copy {
-    @apply m-0 font-extrabold text-red-200;
+    @apply m-0 font-extrabold text-red-400;
   }
 
   .command-preview,
@@ -376,61 +364,61 @@
   }
 
   .command-preview {
-    @apply m-0 rounded-lg border border-white/10 bg-black/45 p-2.5 text-[0.82rem] leading-normal text-emerald-100;
+    @apply mt-3 w-full bg-[#050505] border border-[#1a1a1a] rounded-xl p-4 text-emerald-400 font-mono text-[13px] shadow-[inset_0_0_20px_rgba(0,0,0,0.5)] relative overflow-hidden;
   }
 
   .signal-copy {
-    @apply text-console-foreground/90;
+    @apply text-gray-300;
   }
 
   .safety-line {
-    @apply grid grid-cols-[auto_1fr] items-start gap-2 rounded-lg bg-white/[0.08] px-2.5 py-2;
+    @apply grid grid-cols-[auto_1fr] items-start gap-3 rounded-xl bg-white/5 border border-white/10 px-4 py-3;
   }
 
   .safety-line strong {
-    @apply text-[0.72rem] font-extrabold uppercase text-emerald-200;
+    @apply text-xs font-bold uppercase text-emerald-400;
   }
 
   .safety-line span {
-    @apply leading-snug text-console-foreground/90;
+    @apply leading-snug text-gray-300 text-sm;
   }
 
   .safety-notes {
-    @apply m-0 pl-[18px] text-[0.82rem] leading-normal text-console-muted;
+    @apply m-0 pl-5 text-sm leading-relaxed text-muted-foreground list-disc;
   }
 
   .backup-gate {
-    @apply grid gap-1 rounded-lg border border-amber-300/35 bg-amber-400/10 p-2.5;
+    @apply grid gap-2 rounded-xl border border-yellow-500/20 bg-yellow-500/10 p-4;
   }
 
   .backup-gate span {
-    @apply text-[0.78rem] font-extrabold uppercase text-amber-100;
+    @apply text-[10px] font-extrabold uppercase text-yellow-500 tracking-widest;
   }
 
   .backup-gate strong {
-    @apply break-words text-console-foreground;
+    @apply break-words text-white font-mono text-sm;
   }
 
   .backup-gate.created,
   .backup-gate.not-applicable {
-    @apply border-emerald-300/35 bg-emerald-400/10;
+    @apply border-emerald-500/20 bg-emerald-500/10;
   }
 
   .backup-gate.created span,
   .backup-gate.not-applicable span {
-    @apply text-emerald-200;
+    @apply text-emerald-500;
   }
 
   .backup-gate.blocked {
-    @apply border-red-300/35 bg-red-400/10;
+    @apply border-red-500/20 bg-red-500/10;
   }
 
   .backup-gate.blocked span {
-    @apply text-red-200;
+    @apply text-red-500;
   }
 
   .backup-decision {
-    @apply mt-1 grid gap-2;
+    @apply mt-3 grid gap-3;
   }
 
   .backup-decision button {
@@ -438,147 +426,143 @@
   }
 
   .outbox-panel {
-    @apply grid gap-3 border-red-300/35 bg-red-400/10;
+    @apply grid gap-3 border-b border-red-500/20 bg-red-500/5;
   }
 
   .queue-count {
-    @apply grid min-h-8 min-w-8 place-items-center rounded-full bg-red-200 font-black text-console;
+    @apply grid min-h-8 min-w-8 place-items-center rounded-full bg-red-500/20 font-black text-red-400 border border-red-500/30;
   }
 
   .queue-list,
   .ledger-list,
   .activity-form {
-    @apply grid gap-2.5;
-  }
-
-  .ledger-list {
-    @apply mt-3;
+    @apply grid gap-3 mt-4;
   }
 
   .queue-row,
   .ledger-row,
   .integration-status {
-    @apply grid gap-2 rounded-lg border border-white/10 bg-black/35 p-2.5;
+    @apply grid gap-2 rounded-xl border border-white/10 bg-black/40 p-4 shadow-inner;
   }
 
   .queue-row.failed,
   .validation-expectation.pending,
   .integration-status.activity_created,
   .integration-status.failed {
-    @apply border-amber-300/35 bg-amber-400/10;
+    @apply border-yellow-500/20 bg-yellow-500/5;
   }
 
   .queue-row.dead_letter,
   .validation-row.failed,
   .validation-expectation.failed,
   .integration-status.dead_letter {
-    @apply border-red-300/35 bg-red-950/30;
+    @apply border-red-500/20 bg-red-500/5;
   }
 
   .validation-row.passed,
   .validation-expectation.passed,
   .integration-status.completed {
-    @apply border-emerald-300/35 bg-emerald-400/10;
+    @apply border-emerald-500/20 bg-emerald-500/5;
   }
 
   .ledger-row p,
   .integration-status p {
-    @apply m-0;
+    @apply m-0 text-sm text-gray-300;
   }
 
   .ledger-row code {
-    @apply rounded-md bg-black/45 px-2 py-1.5 text-[0.76rem] leading-normal text-emerald-100;
+    @apply rounded-md bg-black/60 border border-white/10 px-2 py-1.5 text-[11px] leading-normal text-emerald-400 mt-2 block w-fit;
   }
 
   .ledger-kicker,
   .ledger-meta {
-    @apply block text-[0.72rem] font-extrabold uppercase leading-[1.3] text-console-muted;
+    @apply block text-[10px] font-bold uppercase tracking-widest leading-[1.3] text-muted-foreground;
   }
 
   .ledger-meta {
-    @apply normal-case;
+    @apply normal-case font-mono mt-2 opacity-70;
   }
 
   .validation-row.passed .ledger-kicker,
   .validation-expectation.passed .ledger-kicker {
-    @apply text-emerald-200;
+    @apply text-emerald-400;
   }
 
   .validation-row.failed .ledger-kicker,
   .validation-expectation.failed .ledger-kicker,
   .queue-row.dead_letter .ledger-kicker {
-    @apply text-red-200;
+    @apply text-red-400;
   }
 
   .validation-expectation.pending .ledger-kicker,
   .queue-row.failed .ledger-kicker {
-    @apply text-amber-100;
+    @apply text-yellow-400;
   }
 
   .activity-form {
-    @apply mt-3;
+    @apply mt-4;
   }
 
   .terminal-shell {
-    @apply overflow-hidden rounded-lg border border-white/15 bg-black/45;
+    @apply overflow-hidden rounded-xl border border-white/10 bg-black/60 shadow-inner my-6 mx-6;
   }
 
   .terminal-bar {
-    @apply flex gap-1.5 border-b border-white/10 px-3 py-2.5;
+    @apply flex gap-2 border-b border-white/10 bg-black/80 px-4 py-3 items-center;
   }
 
   .terminal-bar span {
-    @apply size-[9px] rounded-full bg-console-muted/55;
+    @apply size-3 rounded-full;
   }
 
+  .terminal-bar span:nth-child(2) { @apply bg-red-500/80; }
+  .terminal-bar span:nth-child(3) { @apply bg-yellow-500/80; }
+  .terminal-bar span:nth-child(4) { @apply bg-emerald-500/80; }
+
   .terminal-transcript {
-    @apply min-h-[150px] overflow-auto;
+    @apply min-h-[200px] overflow-auto max-h-[500px];
   }
 
   .terminal-shell pre {
-    @apply m-0 p-3.5 text-[0.86rem] leading-relaxed text-emerald-100;
+    @apply m-0 p-5 text-[13px] leading-relaxed text-gray-300;
   }
 
   .terminal-shell pre + pre {
-    @apply border-t border-white/10;
+    @apply border-t border-white/5;
   }
 
   .transcript-link {
-    @apply w-fit text-[0.78rem] font-extrabold text-emerald-200 no-underline hover:underline;
+    @apply w-fit text-xs font-mono font-bold text-primary no-underline hover:underline mt-2 block;
   }
 
   .state-block {
-    @apply rounded-lg border border-dashed border-muted-foreground/45 bg-card p-3.5 leading-normal text-muted-foreground;
+    @apply rounded-xl border border-dashed border-white/20 bg-black/20 p-5 leading-normal text-muted-foreground text-center;
   }
 
   .error-state {
-    @apply border-destructive/45 bg-destructive/10 text-destructive;
+    @apply border-red-500/30 bg-red-500/10 text-red-400 text-left flex items-start gap-3;
   }
 
   .skeleton-stack {
-    @apply grid gap-2.5;
+    @apply grid gap-3;
   }
 
   .skeleton-stack.wide {
-    @apply mt-7;
+    @apply mt-8;
   }
 
   .console-field {
-    @apply grid gap-1.5 text-[0.72rem] font-extrabold uppercase text-console-muted;
+    @apply grid gap-2 text-[10px] font-bold uppercase tracking-widest text-muted-foreground;
   }
 
   .console-field input,
   .console-field textarea,
   .console-field select {
-    @apply border-white/15 bg-black/45 text-console-foreground placeholder:text-console-muted focus-visible:ring-emerald-300;
+    @apply bg-[#050505] text-white pl-4 pr-4 py-3 rounded-xl font-mono text-sm border border-white/10 focus:border-primary/50 outline-none transition-all shadow-inner placeholder:text-gray-700;
   }
 
   .console-field textarea {
-    @apply font-mono text-[0.82rem] leading-normal;
-  }
-
-  .console-field select {
-    color-scheme: dark;
+    @apply font-mono text-[13px] leading-relaxed;
   }
 
   @media (max-width: 760px) {
